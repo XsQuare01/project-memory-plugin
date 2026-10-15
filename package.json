@@ -1,0 +1,15 @@
+{
+  "name": "project-memory",
+  "private": true,
+  "type": "module",
+  "description": "과제 단위 프로젝트 메모리 — 이해·결정·열린 질문·원본 자료를 도구와 세션에 걸쳐 이어 준다",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "test": "node --test \"bin/test/*.test.mjs\""
+  },
+  "dependencies": {
+    "dompurify": "3.4.17",
+    "marked": "18.1.1",
+    "yaml": "2.9.1"
+  }
+}
