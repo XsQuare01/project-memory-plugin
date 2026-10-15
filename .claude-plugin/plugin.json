@@ -1,0 +1,21 @@
+{
+  "name": "project-memory",
+  "version": "0.1.0",
+  "description": "과제 단위 프로젝트 메모리와 사용자 메모리 — 새 세션·/clear·/compact 뒤에도 과제의 이해·결정·열린 질문과 사용자 선호를 이어 준다",
+  "author": { "name": "bhmun" },
+  "keywords": ["memory", "project", "context", "hooks"],
+  "userConfig": {
+    "project_root": {
+      "type": "directory",
+      "title": "과제 메모리 위치",
+      "description": "과제 기록(git 저장소)을 둘 폴더. 빈 폴더를 고르면 첫 기록 때 저장소로 준비된다. 비워 두면 ~/project-memory",
+      "required": false
+    },
+    "personal_root": {
+      "type": "directory",
+      "title": "사용자 메모리 위치",
+      "description": "사용자에 대한 정보(배경·선호·동료 역할)를 둘 폴더. git 을 쓰지 않는 로컬 폴더를 권장. 비워 두면 ~/personal-memory",
+      "required": false
+    }
+  }
+}

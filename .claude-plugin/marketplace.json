@@ -1,0 +1,12 @@
+{
+  "name": "project-memory",
+  "description": "과제 단위 프로젝트 메모리 플러그인",
+  "owner": { "name": "bhmun" },
+  "plugins": [
+    {
+      "name": "project-memory",
+      "source": "./",
+      "description": "과제 단위 프로젝트 메모리와 사용자 메모리"
+    }
+  ]
+}
