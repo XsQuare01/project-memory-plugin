@@ -1,0 +1,14 @@
+runtime/
+viewer/
+
+# 원본 자료 중 바이너리는 git 에 넣지 않는다. 백업은 git 과 별개다(설계 3.3).
+*.glb
+*.stl
+*.step
+*.stp
+*.png
+*.jpg
+*.jpeg
+*.pptx
+*.pdf
+*.zip
