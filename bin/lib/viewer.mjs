@@ -7,9 +7,9 @@ import { atomicWrite } from './fsx.mjs'
 import { pinHead, listProjects, readProject, readBlobs } from './snapshot.mjs'
 import { meRoot, readItems } from './me-store.mjs'
 
-// 패키지의 exports 가 브라우저용 파일 경로를 막으므로 node_modules 에서 경로로 직접 읽는다.
-const NODE_MODULES = fileURLToPath(new URL('../../node_modules/', import.meta.url))
-const vendor = rel => readFileSync(join(NODE_MODULES, rel), 'utf8').replace(/<\/script/gi, '<\\/script')
+// 브라우저용 파일은 bin/vendor 에 넣어 둔 것을 쓴다(설치본에 node_modules 가 없을 수 있다).
+const VENDOR = fileURLToPath(new URL('../vendor/', import.meta.url))
+const vendor = file => readFileSync(join(VENDOR, file), 'utf8').replace(/<\/script/gi, '<\\/script')
 
 function diskFiles(dir) {
   if (!existsSync(dir)) return []
@@ -391,8 +391,8 @@ export function renderViewerHtml(data) {
   <section id="detail" class="detail" aria-live="polite"></section>
 </main>
 <script type="application/json" id="pm-data">${json}</script>
-<script>${vendor('marked/lib/marked.umd.js')}</script>
-<script>${vendor('dompurify/dist/purify.min.js')}</script>
+<script>${vendor('marked.umd.js')}</script>
+<script>${vendor('purify.min.js')}</script>
 <script>${APP}</script>
 </body>
 </html>

@@ -1,11 +1,13 @@
 import { createRequire } from 'node:module'
 
 // yaml 은 문서를 실제로 읽을 때만 불러온다(훅의 빠른 경로에서 수십 ms 를 아낀다).
+// 설치본에는 node_modules 가 없을 수 있어(Codex 는 npm 패키지를 깔지 않는다) bin/vendor 의 묶음을 쓴다.
 const require = createRequire(import.meta.url)
 let yamlLib = null
+const load = () => (yamlLib ??= require('../vendor/yaml.cjs'))
 const YAML = {
-  parse: text => (yamlLib ??= require('yaml')).parse(text),
-  stringify: (value, options) => (yamlLib ??= require('yaml')).stringify(value, options),
+  parse: text => load().parse(text),
+  stringify: (value, options) => load().stringify(value, options),
 }
 
 const FRONT = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/
