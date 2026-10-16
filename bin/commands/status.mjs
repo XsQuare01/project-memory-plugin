@@ -1,7 +1,7 @@
 import { join } from 'node:path'
 import { existsSync, readdirSync, rmSync } from 'node:fs'
 import { pmRoot } from '../lib/root.mjs'
-import { parseArgs, out } from '../lib/cli.mjs'
+import { parseArgs, out, findSession } from '../lib/cli.mjs'
 import { readJson } from '../lib/fsx.mjs'
 import { pinHead } from '../lib/snapshot.mjs'
 import { pendingJournals } from '../lib/journal.mjs'
@@ -34,13 +34,15 @@ export async function run(argv) {
     out(`- ${key} → ${v.project}${mark}`)
   }
 
-  if (values.agent && values.session) {
-    const state = readState(root, values.agent, values.session)
-    const delivered = Object.entries(state.me_delivered ?? {}).map(([id, rev]) => `${id}@${rev}`)
+  const who = findSession(values)
+  if (who) {
     out('')
+    out(`세션: ${who.agent}/${who.session}`)
+    const state = readState(root, who.agent, who.session)
+    const delivered = Object.entries(state.me_delivered ?? {}).map(([id, rev]) => `${id}@${rev}`)
     out(`이 세션에 전달한 과제: ${state.last_injected ? `${state.last_injected.project}@${state.last_injected.revision?.slice(0, 9)}` : '없음'}`)
     out(`전달한 사용자 메모리: ${delivered.length ? delivered.join(', ') : '없음'}`)
-    const { resolved, text } = previewFor(root, { agent: values.agent, session: values.session, cwd: state.cwd ?? process.cwd() })
+    const { resolved, text } = previewFor(root, { ...who, cwd: state.cwd ?? process.cwd() })
     out(`지금 다시 계산한 판정: ${resolved ? `${resolved.project} (${resolved.via})` : '없음'}`)
     if (text) out(`--- 지금 계산하면 주입될 글 (${text.length}자) ---\n${text}\n---`)
   }
