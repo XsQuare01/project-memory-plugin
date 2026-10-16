@@ -1,0 +1,30 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/bin/pm.mjs\" context --agent codex",
+            "timeout": 10,
+            "additionalContextLimit": 4000,
+            "statusMessage": "프로젝트 메모리 확인"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/bin/pm.mjs\" turn --agent codex",
+            "timeout": 10,
+            "additionalContextLimit": 4000,
+            "statusMessage": "프로젝트 메모리 확인"
+          }
+        ]
+      }
+    ]
+  }
+}

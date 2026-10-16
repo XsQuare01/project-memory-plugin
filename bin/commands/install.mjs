@@ -2,10 +2,15 @@ import { parseArgs, out } from '../lib/cli.mjs'
 import { PmError } from '../lib/errors.mjs'
 import { planClaude, applyPlan, claudeHome } from '../lib/install-claude.mjs'
 
-const PLUGIN_GUIDE = `Claude Code 에는 플러그인으로 설치합니다:
+const PLUGIN_GUIDE = `Claude Code 와 Codex 모두 플러그인으로 설치합니다.
+Claude Code:
   /plugin marketplace add <이 플러그인 폴더 또는 GitHub 저장소>
   /plugin install project-memory@project-memory
-플러그인 이전의 수동 설치를 걷어 내려면: pm install claude --remove [--dry-run]`
+Codex:
+  codex plugin marketplace add <이 플러그인 폴더 또는 GitHub 저장소>
+  codex plugin add project-memory@project-memory
+  그다음 Codex 에서 /hooks 로 이 플러그인의 훅을 검토·신뢰해야 동작합니다.
+플러그인 이전의 Claude 수동 설치를 걷어 내려면: pm install claude --remove [--dry-run]`
 
 /** pm install claude --remove [--dry-run] — 플러그인 이전의 수동 설치를 걷어 낸다. */
 export async function run(argv) {

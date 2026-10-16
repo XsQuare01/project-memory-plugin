@@ -1,6 +1,6 @@
 {
   "name": "project-memory",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "과제 단위 프로젝트 메모리와 사용자 메모리 — 새 세션·/clear·/compact 뒤에도 과제의 이해·결정·열린 질문과 사용자 선호를 이어 준다",
   "author": { "name": "bhmun" },
   "keywords": ["memory", "project", "context", "hooks"],

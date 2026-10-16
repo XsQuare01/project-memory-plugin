@@ -17,7 +17,9 @@ export const CAPS = { claude: 6000, codex: 3000 }
 export const PM_PATH = fileURLToPath(new URL('../pm.mjs', import.meta.url)).replace(/\\/g, '/')
 
 const POLICY_PATH = fileURLToPath(new URL('../../policy.md', import.meta.url)).replace(/\\/g, '/')
-const SKILL = '/project-memory:project'
+// 스킬 부르는 법은 도구마다 다르다. Codex 는 플러그인 스킬 이름을 "플러그인:스킬" 로 보인다(0.163.0 에서 확인).
+const SKILL = { claude: '/project-memory:project', codex: 'project-memory:project 스킬' }
+const skillOf = agent => SKILL[agent] ?? SKILL.claude
 
 const pmCmd = (agent, session) => `node ${PM_PATH} <명령> --agent ${agent} --session ${session}`
 const meListCmd = `node ${PM_PATH} me list`
@@ -29,7 +31,7 @@ function headerFor(root, { agent, session, project, via, repo, title }) {
     `세션: ${agent}/${session} · 판정: ${how}`,
     `경로: ${join(root, 'projects', project)}`,
     `명령: ${pmCmd(agent, session)}`,
-    `규칙: 이 과제의 이해·결정·질문은 내장 메모리가 아니라 여기에 기록한다(자세히: ${POLICY_PATH}, 명령: ${SKILL}).`,
+    `규칙: 이 과제의 이해·결정·질문은 내장 메모리가 아니라 여기에 기록한다(자세히: ${POLICY_PATH}, 명령: ${skillOf(agent)}).`,
     '      정본은 직접 고치지 않는다. pm checkout → 변경안 수정 → pm apply -m "<메시지>".',
     '      새 해석은 별도 proposed 항목으로. confirmed 문서는 사용자 확인(--confirm) 없이 고치지 않는다.',
     '      작업 상태·개인 취향·임시 경로·절대 경로·비밀은 쓰지 않는다. 기록하면 응답에 한 줄로 알린다.',
@@ -111,7 +113,7 @@ export function contextFor(root, { agent, session, cwd, cap = CAPS[agent] ?? 600
   }
   const recent = cwd ? recentSelectionInCwd(root, { agent, cwd, exclude: session }) : null
   const hint = recent
-    ? `[프로젝트 메모리] 이 폴더에서 최근 선택한 프로젝트: ${recent} — 이어 쓰려면 ${SKILL} use ${recent} (또는 node ${PM_PATH} use ${recent} --agent ${agent} --session ${session})`
+    ? `[프로젝트 메모리] 이 폴더에서 최근 선택한 프로젝트: ${recent} — 이어 쓰려면 ${skillOf(agent)} use ${recent} (또는 node ${PM_PATH} use ${recent} --agent ${agent} --session ${session})`
     : repo && Object.keys(repo.links).length
       ? `[프로젝트 메모리] 이 브랜치는 연결 안 됨 — pm link <이름> 또는 pm use <이름> (명령: ${pmCmd(agent, session)})`
       : null
